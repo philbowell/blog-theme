@@ -1,0 +1,79 @@
+{{ define "main" }}
+<article class="post h-entry">
+    <header class="post-header">
+        {{ if .Title }}
+        <h2 class="post-title p-name">{{ .Title }}</h2>
+        {{ end }}
+        
+        <div class="post-meta">
+            <time class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                {{ .Date | time.Format ":date_long" }}
+            </time>
+            {{ if .Site.Author.name }}
+            <span class="p-author" style="display: none;">{{ .Site.Author.name }}</span>
+            {{ end }}
+        </div>
+    </header>
+
+    {{ if templates.Exists "partials/microhook-before-post-content.html" }}
+    {{ partial "microhook-before-post-content.html" . }}
+    {{ end }}
+
+    <div class="post-content e-content">
+        {{ .Content }}
+    </div>
+
+    {{ if templates.Exists "partials/microhook-after-post-content.html" }}
+    {{ partial "microhook-after-post-content.html" . }}
+    {{ end }}
+
+    {{ if and .Params.categories (not .Site.Params.show_categories) }}
+    <div class="post-categories">
+        <div class="category-list">
+            {{ range .Params.categories }}
+            {{ $categoryName := . }}
+            {{ $categoryTaxonomy := index $.Site.Taxonomies.categories ($categoryName | urlize) }}
+            <a href="/categories/{{ . | urlize }}" class="category-button p-category">{{ . }} ({{ len $categoryTaxonomy.Pages }})</a>
+            {{ end }}
+        </div>
+    </div>
+    {{ end }}
+    
+    <footer class="post-footer">
+        {{ if or (templates.Exists "partials/reply-by-email.html") (templates.Exists "partials/conversation-link.html") (not .Site.Params.hide_share_links) (not .Site.Params.hide_copy_links) }}
+        <div class="post-actions">
+            {{ if templates.Exists "partials/reply-by-email.html" }}
+                {{ partial "reply-by-email.html" . }}
+            {{ end }}
+            {{ if templates.Exists "partials/conversation-link.html" }}
+                {{ partial "conversation-link.html" . }}
+            {{ end }}
+            {{ if not .Site.Params.hide_share_links }}
+                {{ $shareText := "" }}
+                {{ if .Title }}
+                    {{ $shareText = .Title }}
+                {{ else }}
+                    {{ $shareText = .Summary | truncate 100 }}
+                {{ end }}
+                <a href="https://shareopenly.org/share/?url={{ .Permalink }}&text={{ $shareText }}" 
+                   class="share-link-button" target="_blank" rel="noopener noreferrer" 
+                   title="{{ T "Share" }}">
+                    <i class="fas fa-share-nodes" aria-hidden="true"></i>
+                    {{ T "Share" }}
+                </a>
+            {{ end }}
+            {{ if not .Site.Params.hide_copy_links }}
+                <button class="copy-link-button" data-url="{{ .Permalink }}" data-copied-text="{{ T "LinkCopied" }}" title="{{ T "CopyLink" }}">
+                    <i class="fas fa-copy" aria-hidden="true"></i>
+                    {{ T "CopyLink" }}
+                </button>
+            {{ end }}
+        </div>
+        {{ end }}
+        
+        {{ if .Site.Params.include_conversation }}
+        <script src="https://micro.blog/conversation.js?url={{ .Permalink }}"></script>
+        {{ end }}
+    </footer>
+</article>
+{{ end }}
