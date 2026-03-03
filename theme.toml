@@ -1,0 +1,9 @@
+name        = "Phil Bowell Bookshelf"
+license     = "MIT"
+licenselink = "https://opensource.org/licenses/MIT"
+description = "A visual book shelf page template for Micro.blog, designed as a custom theme override for the Mythos theme."
+homepage    = "https://github.com/philbowell/blog-theme"
+min_version = "0.19"
+
+[author]
+  name = "Phil Bowell"
