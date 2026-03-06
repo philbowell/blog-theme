@@ -2063,6 +2063,7 @@ body.page-shelf .post-content p:not(.bookshelf_book) {
 body.page-shelf .post-content p.bookshelf_book {
     display: grid;
     grid-template-columns: 120px 1fr;
+    grid-template-rows: auto auto;
     column-gap: 1.25rem;
     row-gap: 0.2rem;
     min-height: 180px;
@@ -2085,7 +2086,7 @@ body.page-shelf .post-content p.bookshelf_book a {
 /* Cover image — left column, spans both text rows */
 body.page-shelf .post-content p.bookshelf_book img {
     grid-column: 1;
-    grid-row: 1 / -1;
+    grid-row: 1 / 3;
     align-self: start;
     width: 120px !important;
     max-width: 120px !important;
