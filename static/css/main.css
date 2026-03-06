@@ -2015,9 +2015,22 @@ details:last-of-type {
 
 /* ===== BOOKSHELF ===== */
 
-/* Section headings (Currently Reading / Read / Want to Read) */
+/* Widen the page for the shelf */
+body.page-shelf .main-content {
+    max-width: 1850px;
+}
+
+/* .post-content becomes the 4-column grid */
+body.page-shelf .post-content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* Section headings span all columns */
 body.page-shelf .post-content h2,
 body.page-shelf .post-content h3 {
+    grid-column: 1 / -1;
     font-size: 0.72rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -2028,68 +2041,79 @@ body.page-shelf .post-content h3 {
     border-bottom: 1px solid var(--color-border, #e1e5e9);
 }
 
-/* Each book: CSS grid with cover spanning both text rows */
+/* Intro paragraphs (not books) span full width */
+body.page-shelf .post-content p:not(.bookshelf_book) {
+    grid-column: 1 / -1;
+}
+
+/* Each book card — vertical flex: cover on top, text below */
 body.page-shelf .post-content p.bookshelf_book {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    grid-template-rows: auto 1fr;
-    column-gap: 1.25rem;
-    row-gap: 0.2rem;
-    min-height: 180px;
-    padding: 0 0 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
     margin: 0;
-    border-top: 1px solid var(--color-border, #e1e5e9);
+    border: none;
+    min-height: unset;
 }
 
-body.page-shelf .post-content p.bookshelf_book:last-of-type {
-    border-bottom: 1px solid var(--color-border, #e1e5e9);
-}
-
-/* If Micro.blog wraps the book in a link, make it transparent to the grid */
+/* Link transparent to flex layout */
 body.page-shelf .post-content p.bookshelf_book a {
     display: contents;
     text-decoration: none;
     color: inherit;
 }
 
-/* Cover image — left column, spans both text rows, no shadow */
+/* Cover image — fill card width, maintain 2:3 ratio */
 body.page-shelf .post-content p.bookshelf_book img {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    align-self: start;
-    width: 120px !important;
-    max-width: 120px !important;
-    height: 180px;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto;
+    aspect-ratio: 2 / 3;
     object-fit: cover;
     border-radius: 2px;
+    display: block;
     margin: 0;
-    display: block;
 }
 
-/* Title — top-aligned with small breathing room from border */
+/* Title — wraps freely, no truncation */
 body.page-shelf .bookshelf_title {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: start;
-    padding-top: 0.75rem;
     display: block;
-    font-size: 1rem;
+    padding-top: 0.5rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.3;
     color: var(--color-text, #111);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
 }
 
-/* Author — below title, top-aligned */
+/* Author */
 body.page-shelf .bookshelf_author {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
     display: block;
+    margin-top: 0.2rem;
     font-size: 0.8rem;
     color: var(--color-text-muted, #666);
+}
+
+/* Responsive — 3 columns */
+@media (max-width: 1000px) {
+    body.page-shelf .post-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Responsive — 2 columns */
+@media (max-width: 700px) {
+    body.page-shelf .post-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive — 1 column (mobile) */
+@media (max-width: 480px) {
+    body.page-shelf .post-content {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Dark mode: no border on cover images */
