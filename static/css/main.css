@@ -2020,6 +2020,19 @@ body.page-shelf .main-content {
     max-width: 1850px;
 }
 
+/* Stretch the header to match the wide page */
+body.page-shelf .header-container {
+    max-width: 1850px;
+}
+
+/* Tighten the gap between the "Shelf" title and intro paragraph */
+body.page-shelf .post-header {
+    margin-bottom: 0.25rem;
+}
+body.page-shelf .post-title {
+    margin-bottom: 0.25rem;
+}
+
 /* .post-content becomes the 4-column grid */
 body.page-shelf .post-content {
     display: grid;
