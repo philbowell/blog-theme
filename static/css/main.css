@@ -2059,7 +2059,7 @@ body.page-shelf .post-title {
 }
 
 /* .post-content becomes the 4-column grid */
-body.page-shelf .main-content .bookshelf-age .bookshelf-intro {
+body.page-shelf .main-content .bookshelf-page .bookshelf-intro {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
@@ -2080,7 +2080,7 @@ body.page-shelf .main-content h3 {
 }
 
 /* Intro paragraphs (not books) span full width */
-body.page-shelf .main-content bookshelf-age .bookshelf-intro p:not(.bookshelf_book) {
+body.page-shelf .main-content bookshelf-page .bookshelf-intro p:not(.bookshelf_book) {
     grid-column: 1 / -1;
 }
 
