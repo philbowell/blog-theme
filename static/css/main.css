@@ -2059,15 +2059,15 @@ body.page-shelf .post-title {
 }
 
 /* .post-content becomes the 4-column grid */
-body.page-shelf .post-content {
+body.page-shelf .main-content {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
 }
 
 /* Section headings span all columns */
-body.page-shelf .post-content h2,
-body.page-shelf .post-content h3 {
+body.page-shelf .main-content h2,
+body.page-shelf .main-content h3 {
     grid-column: 1 / -1;
     font-size: 0.72rem;
     font-weight: 600;
@@ -2080,12 +2080,12 @@ body.page-shelf .post-content h3 {
 }
 
 /* Intro paragraphs (not books) span full width */
-body.page-shelf .post-content p:not(.bookshelf_book) {
+body.page-shelf .main-content p:not(.bookshelf_book) {
     grid-column: 1 / -1;
 }
 
 /* Each book: internal 2-col grid — cover left, text right */
-body.page-shelf .post-content p.bookshelf_book {
+body.page-shelf .main-content p.bookshelf_book {
     display: grid;
     grid-template-columns: 120px 1fr;
     grid-template-rows: auto 1fr;
@@ -2097,19 +2097,19 @@ body.page-shelf .post-content p.bookshelf_book {
     border-top: 1px solid var(--color-border, #e1e5e9);
 }
 
-body.page-shelf .post-content p.bookshelf_book:last-of-type {
+body.page-shelf .main-content p.bookshelf_book:last-of-type {
     border-bottom: 1px solid var(--color-border, #e1e5e9);
 }
 
 /* Link transparent to internal grid */
-body.page-shelf .post-content p.bookshelf_book a {
+body.page-shelf .main-content p.bookshelf_book a {
     display: contents;
     text-decoration: none;
     color: inherit;
 }
 
 /* Cover image — left column, spans both text rows */
-body.page-shelf .post-content p.bookshelf_book img {
+body.page-shelf .main-content p.bookshelf_book img {
     grid-column: 1;
     grid-row: 1 / 3;
     align-self: start;
