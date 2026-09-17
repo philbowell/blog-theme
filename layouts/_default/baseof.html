@@ -85,7 +85,7 @@
     {{ end }}
 </head>
 
-<body class="no-js{{ with .Title }} page-{{ . | urlize }}{{ end }}">
+<body class="no-js{{ with .Title }} page-{{ . | urlize }}{{ end }}{{ with .Type }} type-{{ . | urlize }}{{ end }}">
     <script>document.body.className = document.body.className.replace('no-js', 'js');</script>
     {{ partial "header.html" . }}
 

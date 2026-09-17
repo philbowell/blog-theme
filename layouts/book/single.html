@@ -1,0 +1,83 @@
+{{ define "main" }}
+{{/* Book Goals uses /books/<isbn>/; prefer explicit front matter when supplied. */}}
+{{ $isbn := string (.Params.isbn | default (path.Base (strings.TrimRight "/" .RelPermalink))) }}
+{{ $related := slice }}
+{{ range where .Site.RegularPages "Type" "post" }}
+  {{ if in (apply (.Params.books | default slice) "string" ".") $isbn }}
+    {{ $related = $related | append . }}
+  {{ end }}
+{{ end }}
+{{ $shelves := slice }}
+{{ $finished := .Params.date_finished }}
+{{ range $key, $label := dict "currentlyreading" "Currently reading" "finishedreading" "Read" "wanttoread" "Want to read" }}
+  {{ range index ($.Site.Data.bookshelves | default dict) $key }}
+    {{ if eq (string .isbn) $isbn }}
+      {{ $shelves = $shelves | append $label }}
+      {{ if and (eq $key "finishedreading") (not $finished) }}
+        {{ $finished = .date_finished }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<article class="book-detail-page">
+  <section class="book-hero" aria-labelledby="book-title"{{ if not .Params.background_url }}{{ with .Params.background_color }} style="background-color: {{ . | safeCSS }};"{{ end }}{{ end }}>
+    {{ with .Params.background_url }}
+    <img class="book-background" src="{{ . }}" alt="" aria-hidden="true">
+    {{ end }}
+    <div class="book-summary">
+      {{ with .Params.cover_url }}
+      <img class="book-cover" src="{{ . }}" alt="Cover of {{ $.Title }}">
+      {{ end }}
+      <header class="book-heading">
+        <h1 class="book-title" id="book-title">{{ .Title }}</h1>
+        {{ with .Params.subtitle }}<p class="book-subtitle">{{ . }}</p>{{ end }}
+        {{ with .Params.author }}<p class="book-author">by {{ . }}</p>{{ end }}
+      </header>
+    </div>
+  </section>
+
+  <div class="book-content">
+    {{ with .Params.description }}
+    <div class="book-description post-content">{{ . | safeHTML }}</div>
+    {{ end }}
+    {{/* Optional metadata is never inferred from a post's publication date. */}}
+    {{ $pages := .Params.page_count }}
+    {{ if or $pages $shelves $finished }}
+    <ul class="book-metadata" aria-label="Book details">
+      {{ with $pages }}<li>{{ . }} pages</li>{{ end }}
+      {{ with $shelves }}<li>{{ delimit (uniq .) ", " }}</li>{{ end }}
+      {{ with $finished }}<li>Finished {{ . }}</li>{{ end }}
+    </ul>
+    {{ end }}
+
+    {{ with $related }}
+    <section class="book-blog" aria-labelledby="book-blog-heading">
+      <h2 class="book-section-heading" id="book-blog-heading">From my blog</h2>
+      {{ range sort . "Date" "desc" }}
+      <article class="post-item">
+        <header class="post-header">
+          {{ if .Title }}<h3 class="post-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>{{ end }}
+          <div class="post-meta">
+            <a class="post-date-link" href="{{ .RelPermalink }}"><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date | time.Format ":date_long" }}</time></a>
+          </div>
+        </header>
+        <div class="post-content">{{ .Content }}</div>
+      </article>
+      {{ end }}
+    </section>
+    {{ end }}
+
+    {{ $returnURL := "/shelf/" | relURL }}
+    {{ $returnLabel := "Shelf" }}
+    {{ $collections := where .Site.RegularPages "Type" "in" (slice "shelf" "reading") }}
+    {{ with .Site.GetPage "/shelf" }}{{ $collections = slice . }}{{ end }}
+    {{ with $collections }}
+      {{ $collection := index . 0 }}
+      {{ $returnURL = $collection.RelPermalink }}
+      {{ $returnLabel = $collection.Title | default $returnLabel }}
+    {{ end }}
+    <nav class="book-return" aria-label="Reading navigation"><a href="{{ $returnURL }}">← {{ $returnLabel }}</a></nav>
+  </div>
+</article>
+{{ end }}

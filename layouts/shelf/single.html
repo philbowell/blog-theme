@@ -15,7 +15,7 @@
         {{ $total := len .currentlyreading }}
         {{ range $i, $book := .currentlyreading }}
         <li>
-          <a class="book-card" href="{{ if $book.post_url }}{{ $book.post_url }}{{ else }}https://micro.blog/books/{{ $book.isbn }}{{ end }}" target="_blank" rel="noopener noreferrer">
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
             <div class="book-card-cover">
               {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
             </div>
@@ -38,7 +38,7 @@
         {{ $total := len .finishedreading }}
         {{ range $i, $book := .finishedreading }}
         <li>
-          <a class="book-card" href="{{ if $book.post_url }}{{ $book.post_url }}{{ else }}https://micro.blog/books/{{ $book.isbn }}{{ end }}" target="_blank" rel="noopener noreferrer">
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
             <div class="book-card-cover">
               {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
             </div>
@@ -61,7 +61,7 @@
         {{ $total := len .wanttoread }}
         {{ range $i, $book := .wanttoread }}
         <li>
-          <a class="book-card" href="{{ if $book.post_url }}{{ $book.post_url }}{{ else }}https://micro.blog/books/{{ $book.isbn }}{{ end }}" target="_blank" rel="noopener noreferrer">
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
             <div class="book-card-cover">
               {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
             </div>
