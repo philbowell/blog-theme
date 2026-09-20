@@ -7,18 +7,6 @@
     {{ $related = $related | append . }}
   {{ end }}
 {{ end }}
-{{ $shelves := slice }}
-{{ $finished := .Params.date_finished }}
-{{ range $key, $label := dict "currentlyreading" "Currently reading" "finishedreading" "Read" "wanttoread" "Want to read" }}
-  {{ range index ($.Site.Data.bookshelves | default dict) $key }}
-    {{ if eq (string .isbn) $isbn }}
-      {{ $shelves = $shelves | append $label }}
-      {{ if and (eq $key "finishedreading") (not $finished) }}
-        {{ $finished = .date_finished }}
-      {{ end }}
-    {{ end }}
-  {{ end }}
-{{ end }}
 
 <article class="book-detail-page">
   <section class="book-hero" aria-labelledby="book-title"{{ if not .Params.background_url }}{{ with .Params.background_color }} style="background-color: {{ . | safeCSS }};"{{ end }}{{ end }}>
@@ -43,9 +31,21 @@
     {{ end }}
     {{/* Optional metadata is never inferred from a post's publication date. */}}
     {{ $pages := .Params.page_count }}
-    {{ if or $pages $shelves $finished }}
+    {{ $genres := .Params.genres | default slice }}
+    {{ $finished := .Params.finished_at }}
+    {{ $shelves := slice }}
+    {{ range .Params.shelves }}
+      {{ with .name }}
+        {{/* A finished date already conveys the generic finished-reading status. */}}
+        {{ if not (and $finished (in (slice "finished reading" "finished" "read") (lower .))) }}
+          {{ $shelves = $shelves | append . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ if or $pages $genres $shelves $finished }}
     <ul class="book-metadata" aria-label="Book details">
       {{ with $pages }}<li>{{ . }} pages</li>{{ end }}
+      {{ with $genres }}<li>{{ delimit (uniq .) ", " }}</li>{{ end }}
       {{ with $shelves }}<li>{{ delimit (uniq .) ", " }}</li>{{ end }}
       {{ with $finished }}<li>Finished {{ . }}</li>{{ end }}
     </ul>
