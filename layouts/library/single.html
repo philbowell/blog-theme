@@ -1,0 +1,86 @@
+{{ define "main" }}
+
+<div class="bookshelf-page">
+
+  {{ if .Content }}
+  <div class="bookshelf-intro">{{ .Content }}</div>
+  {{ end }}
+
+  {{ with .Site.Data.bookshelves }}
+
+    {{ if .currentlyreading }}
+    <section class="bookshelf-section">
+      <h2 class="bookshelf-heading">Currently Reading</h2>
+      <ul class="book-list">
+        {{ $total := len .currentlyreading }}
+        {{ range $i, $book := .currentlyreading }}
+        <li>
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
+            <div class="book-card-cover">
+              {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
+            </div>
+            <div class="book-card-meta">
+              <span class="book-card-number">No. {{ math.Sub $total $i }}</span>
+              <span class="book-card-title">{{ $book.title }}</span>
+              <span class="book-card-author">{{ $book.author }}</span>
+            </div>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+
+    {{ if .finishedreading }}
+    <section class="bookshelf-section">
+      <h2 class="bookshelf-heading">Read</h2>
+      <ul class="book-list">
+        {{ $total := len .finishedreading }}
+        {{ range $i, $book := .finishedreading }}
+        <li>
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
+            <div class="book-card-cover">
+              {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
+            </div>
+            <div class="book-card-meta">
+              <span class="book-card-number">No. {{ math.Sub $total $i }}</span>
+              <span class="book-card-title">{{ $book.title }}</span>
+              <span class="book-card-author">{{ $book.author }}</span>
+            </div>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+
+    {{ if .wanttoread }}
+    <section class="bookshelf-section">
+      <h2 class="bookshelf-heading">Want to Read</h2>
+      <ul class="book-list">
+        {{ $total := len .wanttoread }}
+        {{ range $i, $book := .wanttoread }}
+        <li>
+          <a class="book-card"{{ if $book.isbn }} href="{{ printf "/books/%s/" (string $book.isbn) | relURL }}"{{ else if $book.post_url }} href="{{ $book.post_url }}" target="_blank" rel="noopener noreferrer"{{ end }}>
+            <div class="book-card-cover">
+              {{ if $book.cover_url }}<img src="{{ $book.cover_url }}" alt="{{ $book.title }}" loading="lazy">{{ end }}
+            </div>
+            <div class="book-card-meta">
+              <span class="book-card-number">No. {{ math.Sub $total $i }}</span>
+              <span class="book-card-title">{{ $book.title }}</span>
+              <span class="book-card-author">{{ $book.author }}</span>
+            </div>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+
+  {{ else }}
+  <p>No bookshelves found. Add books to your Micro.blog bookshelves and they will appear here automatically.</p>
+  {{ end }}
+
+</div>
+
+{{ end }}

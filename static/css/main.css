@@ -2041,25 +2041,30 @@ details:last-of-type {
 /* ===== BOOKSHELF ===== */
 
 /* Widen the page for the shelf */
-body.page-shelf .main-content {
+body.page-shelf .main-content,
+body.page-library .main-content {
     max-width: 1850px;
 }
 
 /* Stretch the header to match the wide page */
-body.page-shelf .header-container {
+body.page-shelf .header-container,
+body.page-library .header-container {
     max-width: 1850px;
 }
 
 /* Tighten the gap between the "Shelf" title and intro paragraph */
-body.page-shelf .post-header {
+body.page-shelf .post-header,
+body.page-library .post-header {
     margin-bottom: 0.25rem;
 }
-body.page-shelf .post-title {
+body.page-shelf .post-title,
+body.page-library .post-title {
     margin-bottom: 0.25rem;
 }
 
 /* .post-content becomes the 4-column grid */
-body.page-shelf .main-content .bookshelf-page .bookshelf-intro {
+body.page-shelf .main-content .bookshelf-page .bookshelf-intro,
+body.page-library .main-content .bookshelf-page .bookshelf-intro {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
@@ -2067,7 +2072,9 @@ body.page-shelf .main-content .bookshelf-page .bookshelf-intro {
 
 /* Section headings span all columns */
 body.page-shelf .main-content h2,
-body.page-shelf .main-content h3 {
+body.page-library .main-content h2,
+body.page-shelf .main-content h3,
+body.page-library .main-content h3 {
     grid-column: 1 / -1;
     font-size: 0.72rem;
     font-weight: 600;
@@ -2080,12 +2087,14 @@ body.page-shelf .main-content h3 {
 }
 
 /* Intro paragraphs (not books) span full width */
-body.page-shelf .main-content bookshelf-page .bookshelf-intro p:not(.bookshelf_book) {
+body.page-shelf .main-content bookshelf-page .bookshelf-intro p:not(.bookshelf_book),
+body.page-library .main-content bookshelf-page .bookshelf-intro p:not(.bookshelf_book) {
     grid-column: 1 / -1;
 }
 
 /* Each book: internal 2-col grid — cover left, text right */
-body.page-shelf .main-content p.bookshelf_book {
+body.page-shelf .main-content p.bookshelf_book,
+body.page-library .main-content p.bookshelf_book {
     display: grid;
     grid-template-columns: 120px 1fr;
     grid-template-rows: auto 1fr;
@@ -2097,19 +2106,22 @@ body.page-shelf .main-content p.bookshelf_book {
     border-top: 1px solid var(--color-border, #e1e5e9);
 }
 
-body.page-shelf .main-content p.bookshelf_book:last-of-type {
+body.page-shelf .main-content p.bookshelf_book:last-of-type,
+body.page-library .main-content p.bookshelf_book:last-of-type {
     border-bottom: 1px solid var(--color-border, #e1e5e9);
 }
 
 /* Link transparent to internal grid */
-body.page-shelf .main-content p.bookshelf_book a {
+body.page-shelf .main-content p.bookshelf_book a,
+body.page-library .main-content p.bookshelf_book a {
     display: contents;
     text-decoration: none;
     color: inherit;
 }
 
 /* Cover image — left column, spans both text rows */
-body.page-shelf .main-content p.bookshelf_book img {
+body.page-shelf .main-content p.bookshelf_book img,
+body.page-library .main-content p.bookshelf_book img {
     grid-column: 1;
     grid-row: 1 / 3;
     align-self: start;
@@ -2123,7 +2135,8 @@ body.page-shelf .main-content p.bookshelf_book img {
 }
 
 /* Title — top-aligned, wraps freely */
-body.page-shelf .bookshelf_title {
+body.page-shelf .bookshelf_title,
+body.page-library .bookshelf_title {
     grid-column: 2;
     grid-row: 1;
     align-self: start;
@@ -2138,7 +2151,8 @@ body.page-shelf .bookshelf_title {
 }
 
 /* Author */
-body.page-shelf .bookshelf_author {
+body.page-shelf .bookshelf_author,
+body.page-library .bookshelf_author {
     grid-column: 2;
     grid-row: 2;
     align-self: start;
@@ -2149,28 +2163,32 @@ body.page-shelf .bookshelf_author {
 
 /* Responsive — 3 columns */
 @media (max-width: 1600px) {
-    body.page-shelf .post-content {
+    body.page-shelf .post-content,
+    body.page-library .post-content {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 /* Responsive — 2 columns */
 @media (max-width: 1100px) {
-    body.page-shelf .post-content {
+    body.page-shelf .post-content,
+    body.page-library .post-content {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 /* Responsive — 1 column (mobile) */
 @media (max-width: 650px) {
-    body.page-shelf .post-content {
+    body.page-shelf .post-content,
+    body.page-library .post-content {
         grid-template-columns: 1fr;
     }
 }
 
 /* Dark mode: no border on cover images */
 @media (prefers-color-scheme: dark) {
-    body.page-shelf .post-content p.bookshelf_book img {
+    body.page-shelf .post-content p.bookshelf_book img,
+    body.page-library .post-content p.bookshelf_book img {
         border: none;
     }
 }

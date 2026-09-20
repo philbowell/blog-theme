@@ -70,12 +70,22 @@
 
     {{ $returnURL := "/shelf/" | relURL }}
     {{ $returnLabel := "Shelf" }}
-    {{ $collections := where .Site.RegularPages "Type" "in" (slice "shelf" "reading") }}
-    {{ with .Site.GetPage "/shelf" }}{{ $collections = slice . }}{{ end }}
-    {{ with $collections }}
-      {{ $collection := index . 0 }}
-      {{ $returnURL = $collection.RelPermalink }}
-      {{ $returnLabel = $collection.Title | default $returnLabel }}
+    {{ $collection := false }}
+    {{ range slice "library" "shelf" "reading" }}
+      {{ if not $collection }}
+        {{ with $.Site.GetPage (printf "/%s" .) }}
+          {{ $collection = . }}
+        {{ else }}
+          {{ with where $.Site.RegularPages "Type" . }}
+            {{ $collection = index . 0 }}
+          {{ end }}
+        {{ end }}
+        {{ with $collection }}
+          {{ $returnURL = .RelPermalink }}
+          {{ $returnLabel = .Title | default $returnLabel }}
+        {{ end }}
+        {{ if and $collection (eq . "library") }}{{ $returnLabel = "Library" }}{{ end }}
+      {{ end }}
     {{ end }}
     <nav class="book-return" aria-label="Reading navigation"><a href="{{ $returnURL }}">← {{ $returnLabel }}</a></nav>
   </div>
